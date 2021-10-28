@@ -1,37 +1,17 @@
 import React, { Component } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import toast, { Toaster, CheckmarkIcon } from 'react-hot-toast';
-import moment from "moment";
+import Popup from 'reactjs-popup';
+import Consent from './Consent';
+//import Popup from 'react-popup';
+//import moment from "moment";
 
 import "./App.css";
-import "react-big-calendar/lib/css/react-big-calendar.css";
+import 'reactjs-popup/dist/index.css';
 
-// Function to help secure usage of `_blank`
-const openInNewTab = (url) => {
-  const newWindow = window.open(url, '_blank', 'noopener,noreferrer')
-  if (newWindow) newWindow.opener = null
-}
 
-// Localizer
-const localizer = momentLocalizer(moment);
-
-const subjectDate = (eventDate) => {
-  return encodeURIComponent(eventDate.split("T")[0] + " Event Quote Request")
-}
-
-// Available Date Callback
-const availDate = (eventInfo) => toast((t) => (
-    <span>
-      That date is available! {'  '}
-      <button onClick={() => openInNewTab(
-        'https://www.djjoeidaho.com/contact-us?subject=' + subjectDate(eventInfo.start)
-      )}>Snag It!</button>
-    </span>
-  ),
-  {
-    icon: <CheckmarkIcon />,
-    duration: 10000,
-  }
+const PopupExample = () => (
+  <Popup trigger={<button> Trigger</button>} position="right center">
+    <div>Popup content here !!</div>
+  </Popup>
 );
 
 class App extends Component {
@@ -39,48 +19,20 @@ class App extends Component {
     super(props);
 
     this.state = {
-      error: null,
-      events: []
+      error: null
     };
 
-    // Bind Class Method
-    this.requestAvailableDates = this.requestAvailableDates.bind(this);
   }
-
-  requestAvailableDates(props) {
-    // Make POST Request with JSON Payload
-    fetch("/api/getavailability", {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        start: props.start,
-        end: props.end
-      })}).then(res => res.json())
-      .then(data => {this.setState({events: data.events});},
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        error => {
-          this.setState({error});
-          toast.error("ERROR: "+JSON.stringify(error));
-        }
-      )
+  // use comonentDidMount lifecycle method
+  componentDidMount() {
+    PopupExample();
+    console.log("loaded!");
   }
 
   render() {
     return (
       <div className="App">
-        <Toaster position="bottom-right"/>
-        <Calendar
-          localizer={localizer}
-          defaultDate={new Date()}
-          defaultView="month"
-          events={this.state.events}
-          views={['month']}
-          style={{ height: "100vh" }}
-          onRangeChange={this.requestAvailableDates}
-          onSelectEvent={availDate}
-        />
+        <Consent />
       </div>
     );
   }

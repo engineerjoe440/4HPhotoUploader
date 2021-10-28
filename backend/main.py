@@ -36,7 +36,14 @@ async def root(request: Request):
         },
     )
 
-# Main API Endpoint to Serve Available Dates
+# Consent Prompt Loader
+@app.get("/api/consenttext")
+async def get_consent_text():
+    with open('static/consent.txt', 'r') as fObj:
+        text = fObj.read().replace('\n', ' ')
+    return text
+
+# Main API Endpoint to Capture Image Uploads
 @app.post("/api/upload")
 async def create_upload_file(file: UploadFile = File(...)):
     return {"filename": file.filename}
