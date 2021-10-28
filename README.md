@@ -1,15 +1,12 @@
-# djjoecalendar
-Availability Calendar for DJJoe Website
+# 4HPhotoUploader
+Photo consent and uploader prototype for 4-H programs.
 
 ### Frontend:
-The frontend of this system is a React-js site generated using
-[`react-big-calendar`](https://github.com/jquense/react-big-calendar)
-whose documentation may be found [here](https://jquense.github.io/react-big-calendar/examples/index.html#api).
+The frontend of this system is a React-js site.
 
 ### Backend:
 The backend is a Python/FastAPI server responsible for serving the static files
-and accessing the sensitive information (private calendars) to make appropriate
-queries relating to available dates.
+and accessing permitting file uploads.
 
 ### Linking frontend and backend (React/FastAPI):
 With some minor modifications made to the FastAPI configuration,
